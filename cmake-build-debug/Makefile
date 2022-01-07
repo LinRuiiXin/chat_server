@@ -169,6 +169,33 @@ src/buffer/char_buffer.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/chat_server.dir/build.make CMakeFiles/chat_server.dir/src/buffer/char_buffer.cpp.s
 .PHONY : src/buffer/char_buffer.cpp.s
 
+src/filter/filter_chain.o: src/filter/filter_chain.cpp.o
+
+.PHONY : src/filter/filter_chain.o
+
+# target to build an object file
+src/filter/filter_chain.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/chat_server.dir/build.make CMakeFiles/chat_server.dir/src/filter/filter_chain.cpp.o
+.PHONY : src/filter/filter_chain.cpp.o
+
+src/filter/filter_chain.i: src/filter/filter_chain.cpp.i
+
+.PHONY : src/filter/filter_chain.i
+
+# target to preprocess a source file
+src/filter/filter_chain.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/chat_server.dir/build.make CMakeFiles/chat_server.dir/src/filter/filter_chain.cpp.i
+.PHONY : src/filter/filter_chain.cpp.i
+
+src/filter/filter_chain.s: src/filter/filter_chain.cpp.s
+
+.PHONY : src/filter/filter_chain.s
+
+# target to generate assembly for a file
+src/filter/filter_chain.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/chat_server.dir/build.make CMakeFiles/chat_server.dir/src/filter/filter_chain.cpp.s
+.PHONY : src/filter/filter_chain.cpp.s
+
 src/main.o: src/main.cpp.o
 
 .PHONY : src/main.o
@@ -262,6 +289,9 @@ help:
 	@echo "... src/buffer/char_buffer.o"
 	@echo "... src/buffer/char_buffer.i"
 	@echo "... src/buffer/char_buffer.s"
+	@echo "... src/filter/filter_chain.o"
+	@echo "... src/filter/filter_chain.i"
+	@echo "... src/filter/filter_chain.s"
 	@echo "... src/main.o"
 	@echo "... src/main.i"
 	@echo "... src/main.s"

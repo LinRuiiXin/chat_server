@@ -10,10 +10,13 @@
 
 typedef unsigned int uint_32;
 typedef std::map<int, server_connect> connect_map;
+typedef std::pair<int, server_connect> connect_pair;
 
 using std::unique_ptr;
 
 class server_socket {
+
+    friend void tcp_accept_handler(int, short, void*);
 
 public:
     explicit server_socket(uint_32 _port = 80);
@@ -30,6 +33,7 @@ private:
     const uint_32 port;                 // 监听端口
     int accept_fd;                      // 接收连接 socket 文件描述符
     struct event *accept_event;         // 接收连接 event
+    connect_map connect_map{};            // 管理所有连接的 map
 
     int open_tcp_socket();
 

@@ -4,8 +4,8 @@
 
 void log_err_and_exit(const char *);
 
-void char_buffer::write(char *source, uint_32 len) {
-    for(char *s_ptr = source; s_ptr < source + len; ++s_ptr)
+void char_buffer::write(const char *source, uint_32 len) {
+    for(const char *s_ptr = source; s_ptr < source + len; ++s_ptr)
         buffer.push_back(*s_ptr);
 }
 

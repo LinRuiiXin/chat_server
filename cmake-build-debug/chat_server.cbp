@@ -88,6 +88,15 @@
 		<Unit filename="/Users/WorkSpace/CLionProjects/chat_server/src/buffer/headers/char_buffer.h">
 			<Option target="chat_server"/>
 		</Unit>
+		<Unit filename="/Users/WorkSpace/CLionProjects/chat_server/src/filter/filter_chain.cpp">
+			<Option target="chat_server"/>
+		</Unit>
+		<Unit filename="/Users/WorkSpace/CLionProjects/chat_server/src/filter/headers/filter.h">
+			<Option target="chat_server"/>
+		</Unit>
+		<Unit filename="/Users/WorkSpace/CLionProjects/chat_server/src/filter/headers/filter_chain.h">
+			<Option target="chat_server"/>
+		</Unit>
 		<Unit filename="/Users/WorkSpace/CLionProjects/chat_server/src/main.cpp">
 			<Option target="chat_server"/>
 		</Unit>

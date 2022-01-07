@@ -15,9 +15,9 @@ typedef deque<char>::iterator buf_it;
 class char_buffer final {
 
 public:
-    explicit char_buffer(uint_32 init_size = 64): buffer(init_size){}
+    explicit char_buffer(): buffer(){}
     char_buffer(char_buffer &&_r_buffer) noexcept: buffer(move(_r_buffer.buffer)){}
-    void write(char*, uint_32); // 写入缓冲区
+    void write(const char*, uint_32); // 写入缓冲区
     buf_it begin() { return buffer.begin(); }
     buf_it end() { return buffer.end(); }
     unique_ptr<char[]> read(uint_32); // 读取若干个字符, 返回字符数组指针
