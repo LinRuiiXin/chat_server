@@ -6,6 +6,6 @@ set(CMAKE_CXX_STANDARD 11)
 include_directories(/usr/local/Cellar/libevent/2.1.12/include)
 link_directories(/usr/local/Cellar/libevent/2.1.12/lib)
 
-add_executable(chat_server src/main.cpp src/net/server_socket.cpp src/net/headers/server_socket.h src/net/server_connect.cpp src/net/headers/server_connect.h src/buffer/char_buffer.cpp src/buffer/headers/char_buffer.h src/buffer/char_buffer.cpp src/buffer/headers/char_buffer.h src/filter/headers/filter.h src/filter/filter_chain.cpp src/filter/headers/filter_chain.h)
+add_executable(chat_server src/main.cpp src/net/server_socket.cpp src/net/headers/server_socket.h src/net/server_connect.cpp src/net/headers/server_connect.h src/buffer/char_buffer.cpp src/buffer/headers/char_buffer.h src/buffer/char_buffer.cpp src/buffer/headers/char_buffer.h src/filter/filter_chain.cpp src/filter/headers/filter_chain.h)
 
 target_link_libraries(chat_server event)

@@ -1,12 +1,14 @@
 #include "headers/server_connect.h"
 #include <unistd.h>
 
+#include <utility>
+
 #define DEFAULT_BUF_SIZE 512
 
 void tcp_read_handler(int, short, void *);  // NOLINT(readability-redundant-declaration)
 
-server_connect::server_connect(server_socket &_server_sock, int _sock_fd, event_base *_ev_base)
-        : server_sock(_server_sock), sock_fd(_sock_fd), in_buffer(), out_buffer() {
+server_connect::server_connect(class server_socket &_server_sock, int _sock_fd, event_base *_ev_base, filter_chain _filter_chain)
+        : server_sock(_server_sock), sock_fd(_sock_fd), in_buffer(), out_buffer(), filters(std::move(_filter_chain)) {
 
     evutil_make_socket_nonblocking(sock_fd);
     event = event_new(_ev_base, sock_fd, EV_READ | EV_PERSIST, tcp_read_handler, this);
@@ -15,7 +17,8 @@ server_connect::server_connect(server_socket &_server_sock, int _sock_fd, event_
 }
 
 server_connect::server_connect(server_connect &&_r_c) noexcept :server_sock(_r_c.server_sock), sock_fd(_r_c.sock_fd),
-                                                                in_buffer(move(_r_c.in_buffer)), out_buffer(move(_r_c.out_buffer)), event(_r_c.event) {
+                                                                in_buffer(move(_r_c.in_buffer)), out_buffer(move(_r_c.out_buffer)),
+                                                                event(_r_c.event), filters(_r_c.filters) {
     _r_c.event = nullptr;
     event_assign(event, event->ev_base, sock_fd, EV_READ | EV_PERSIST, tcp_read_handler, this);
 }
@@ -35,4 +38,5 @@ void tcp_read_handler(int sock_fd, short events, void *arg) {
     }
     connect_ptr->in_buffer.write(buffer, len);
     printf("received message from %d: %s\n", sock_fd, buffer);
+    connect_ptr->filters.do_filter(*connect_ptr);
 }

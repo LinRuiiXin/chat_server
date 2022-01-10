@@ -1,10 +1,10 @@
 #ifndef CHAT_SERVER_SERVER_CONNECT_H
 #define CHAT_SERVER_SERVER_CONNECT_H
 
-#include "../../buffer/headers/char_buffer.h"
-#include "server_socket.h"
 #include <event.h>
-#include <memory>
+#include <algorithm>
+#include "../../filter/headers/filter_chain.h"
+#include "../../buffer/headers/char_buffer.h"
 
 using std::move;
 
@@ -13,8 +13,10 @@ class server_connect final {
     friend void tcp_read_handler(int, short, void *);
 
 public:
-    explicit server_connect(server_socket &, int, event_base *);
+    server_connect(class server_socket &, int, event_base *, filter_chain);
     server_connect(server_connect &&) noexcept;
+    char_buffer& in() { return in_buffer; }
+    char_buffer& out() { return out_buffer; }
 
     server_connect(const server_connect &) = delete;
     server_connect &operator=(server_connect &) = delete;
@@ -25,6 +27,7 @@ private:
     struct event *event;
     char_buffer in_buffer;
     char_buffer out_buffer;
+    filter_chain filters;
 
 };
 

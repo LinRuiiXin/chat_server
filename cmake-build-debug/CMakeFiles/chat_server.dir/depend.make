@@ -4,29 +4,11 @@
 CMakeFiles/chat_server.dir/src/buffer/char_buffer.cpp.o: ../src/buffer/char_buffer.cpp
 CMakeFiles/chat_server.dir/src/buffer/char_buffer.cpp.o: ../src/buffer/headers/char_buffer.h
 
-CMakeFiles/chat_server.dir/src/filter/filter_chain.cpp.o: ../src/buffer/headers/char_buffer.h
 CMakeFiles/chat_server.dir/src/filter/filter_chain.cpp.o: ../src/filter/filter_chain.cpp
 CMakeFiles/chat_server.dir/src/filter/filter_chain.cpp.o: ../src/filter/headers/filter_chain.h
-CMakeFiles/chat_server.dir/src/filter/filter_chain.cpp.o: ../src/net/headers/server_connect.h
-CMakeFiles/chat_server.dir/src/filter/filter_chain.cpp.o: ../src/net/headers/server_socket.h
-CMakeFiles/chat_server.dir/src/filter/filter_chain.cpp.o: /usr/local/Cellar/libevent/2.1.12/include/event.h
-CMakeFiles/chat_server.dir/src/filter/filter_chain.cpp.o: /usr/local/Cellar/libevent/2.1.12/include/event2/buffer.h
-CMakeFiles/chat_server.dir/src/filter/filter_chain.cpp.o: /usr/local/Cellar/libevent/2.1.12/include/event2/buffer_compat.h
-CMakeFiles/chat_server.dir/src/filter/filter_chain.cpp.o: /usr/local/Cellar/libevent/2.1.12/include/event2/bufferevent.h
-CMakeFiles/chat_server.dir/src/filter/filter_chain.cpp.o: /usr/local/Cellar/libevent/2.1.12/include/event2/bufferevent_compat.h
-CMakeFiles/chat_server.dir/src/filter/filter_chain.cpp.o: /usr/local/Cellar/libevent/2.1.12/include/event2/bufferevent_struct.h
-CMakeFiles/chat_server.dir/src/filter/filter_chain.cpp.o: /usr/local/Cellar/libevent/2.1.12/include/event2/event-config.h
-CMakeFiles/chat_server.dir/src/filter/filter_chain.cpp.o: /usr/local/Cellar/libevent/2.1.12/include/event2/event.h
-CMakeFiles/chat_server.dir/src/filter/filter_chain.cpp.o: /usr/local/Cellar/libevent/2.1.12/include/event2/event_compat.h
-CMakeFiles/chat_server.dir/src/filter/filter_chain.cpp.o: /usr/local/Cellar/libevent/2.1.12/include/event2/event_struct.h
-CMakeFiles/chat_server.dir/src/filter/filter_chain.cpp.o: /usr/local/Cellar/libevent/2.1.12/include/event2/keyvalq_struct.h
-CMakeFiles/chat_server.dir/src/filter/filter_chain.cpp.o: /usr/local/Cellar/libevent/2.1.12/include/event2/tag.h
-CMakeFiles/chat_server.dir/src/filter/filter_chain.cpp.o: /usr/local/Cellar/libevent/2.1.12/include/event2/tag_compat.h
-CMakeFiles/chat_server.dir/src/filter/filter_chain.cpp.o: /usr/local/Cellar/libevent/2.1.12/include/event2/util.h
-CMakeFiles/chat_server.dir/src/filter/filter_chain.cpp.o: /usr/local/Cellar/libevent/2.1.12/include/event2/visibility.h
-CMakeFiles/chat_server.dir/src/filter/filter_chain.cpp.o: /usr/local/Cellar/libevent/2.1.12/include/evutil.h
 
 CMakeFiles/chat_server.dir/src/main.cpp.o: ../src/buffer/headers/char_buffer.h
+CMakeFiles/chat_server.dir/src/main.cpp.o: ../src/filter/headers/filter_chain.h
 CMakeFiles/chat_server.dir/src/main.cpp.o: ../src/main.cpp
 CMakeFiles/chat_server.dir/src/main.cpp.o: ../src/net/headers/server_connect.h
 CMakeFiles/chat_server.dir/src/main.cpp.o: ../src/net/headers/server_socket.h
@@ -48,8 +30,8 @@ CMakeFiles/chat_server.dir/src/main.cpp.o: /usr/local/Cellar/libevent/2.1.12/inc
 CMakeFiles/chat_server.dir/src/main.cpp.o: /usr/local/Cellar/libevent/2.1.12/include/evutil.h
 
 CMakeFiles/chat_server.dir/src/net/server_connect.cpp.o: ../src/buffer/headers/char_buffer.h
+CMakeFiles/chat_server.dir/src/net/server_connect.cpp.o: ../src/filter/headers/filter_chain.h
 CMakeFiles/chat_server.dir/src/net/server_connect.cpp.o: ../src/net/headers/server_connect.h
-CMakeFiles/chat_server.dir/src/net/server_connect.cpp.o: ../src/net/headers/server_socket.h
 CMakeFiles/chat_server.dir/src/net/server_connect.cpp.o: ../src/net/server_connect.cpp
 CMakeFiles/chat_server.dir/src/net/server_connect.cpp.o: /usr/local/Cellar/libevent/2.1.12/include/event.h
 CMakeFiles/chat_server.dir/src/net/server_connect.cpp.o: /usr/local/Cellar/libevent/2.1.12/include/event2/buffer.h
@@ -69,6 +51,7 @@ CMakeFiles/chat_server.dir/src/net/server_connect.cpp.o: /usr/local/Cellar/libev
 CMakeFiles/chat_server.dir/src/net/server_connect.cpp.o: /usr/local/Cellar/libevent/2.1.12/include/evutil.h
 
 CMakeFiles/chat_server.dir/src/net/server_socket.cpp.o: ../src/buffer/headers/char_buffer.h
+CMakeFiles/chat_server.dir/src/net/server_socket.cpp.o: ../src/filter/headers/filter_chain.h
 CMakeFiles/chat_server.dir/src/net/server_socket.cpp.o: ../src/net/headers/server_connect.h
 CMakeFiles/chat_server.dir/src/net/server_socket.cpp.o: ../src/net/headers/server_socket.h
 CMakeFiles/chat_server.dir/src/net/server_socket.cpp.o: ../src/net/server_socket.cpp

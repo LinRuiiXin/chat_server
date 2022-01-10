@@ -2,17 +2,19 @@
 #define CHAT_SERVER_SERVER_SOCKET_H
 
 #include "server_connect.h"
+#include "../../filter/headers/filter_chain.h"
 #include <memory>
 #include <event.h>
 #include <map>
 
 #define MAX_ACCEPT 65535
 
-typedef unsigned int uint_32;
-typedef std::map<int, server_connect> connect_map;
-typedef std::pair<int, server_connect> connect_pair;
-
 using std::unique_ptr;
+using std::shared_ptr;
+
+typedef unsigned int uint_32;
+typedef std::map<int, class server_connect> connect_map;
+typedef std::pair<int, class server_connect> connect_pair;
 
 class server_socket {
 
@@ -20,6 +22,7 @@ class server_socket {
 
 public:
     explicit server_socket(uint_32 _port = 80);
+    void set_filter_chain(filter_initializer);
     void start();
     virtual ~server_socket() = default;
 
@@ -33,7 +36,8 @@ private:
     const uint_32 port;                 // 监听端口
     int accept_fd;                      // 接收连接 socket 文件描述符
     struct event *accept_event;         // 接收连接 event
-    connect_map connect_map{};            // 管理所有连接的 map
+    connect_map connect_map{};          // 管理所有连接的 map
+    filter_chain filters;               // 连接过滤拦截器
 
     int open_tcp_socket();
 
