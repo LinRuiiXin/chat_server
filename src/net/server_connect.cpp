@@ -37,6 +37,6 @@ void tcp_read_handler(int sock_fd, short events, void *arg) {
         return;
     }
     connect_ptr->in_buffer.write(buffer, len);
-    printf("received message from %d: %s\n", sock_fd, buffer);
+//    printf("received message from %d: %s\n", sock_fd, buffer);
     connect_ptr->filters.do_filter(*connect_ptr);
 }
