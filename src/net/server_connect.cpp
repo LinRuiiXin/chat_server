@@ -7,6 +7,7 @@
 
 void tcp_read_handler(int, short, void *);  // NOLINT(readability-redundant-declaration)
 
+// 将客户端 socket 与 server_connect 绑定, 并且向 event_base 注册一个监听数据可读的事件
 server_connect::server_connect(class server_socket &_server_sock, int _sock_fd, event_base *_ev_base, filter_chain _filter_chain)
         : server_sock(_server_sock), sock_fd(_sock_fd), in_buffer(), out_buffer(), filters(std::move(_filter_chain)) {
 
@@ -16,17 +17,20 @@ server_connect::server_connect(class server_socket &_server_sock, int _sock_fd, 
     printf("client %d connected\n", sock_fd);
 }
 
+// 当 server_connect 对象被移动时, 应将事件的回调函数所传参数改为新的对象
 server_connect::server_connect(server_connect &&_r_c) noexcept :server_sock(_r_c.server_sock), sock_fd(_r_c.sock_fd),
                                                                 in_buffer(move(_r_c.in_buffer)), out_buffer(move(_r_c.out_buffer)),
-                                                                event(_r_c.event), filters(_r_c.filters) {
+                                                                event(_r_c.event), filters(move(_r_c.filters)) {
     _r_c.event = nullptr;
     event_assign(event, event->ev_base, sock_fd, EV_READ | EV_PERSIST, tcp_read_handler, this);
 }
 
+// 当 socket 可读
 void tcp_read_handler(int sock_fd, short events, void *arg) {
     printf("connect %d is already to read\n", sock_fd);
     auto connect_ptr = (server_connect*) arg;
 
+    // 将 socket 的数据读入临时缓冲区, 随后写入 server_connect 内部的数据缓冲区
     char buffer[DEFAULT_BUF_SIZE];
     ssize_t len = read(sock_fd, buffer, DEFAULT_BUF_SIZE);
 
@@ -38,5 +42,6 @@ void tcp_read_handler(int sock_fd, short events, void *arg) {
     }
     connect_ptr->in_buffer.write(buffer, len);
 //    printf("received message from %d: %s\n", sock_fd, buffer);
+    // 调度请求拦截器
     connect_ptr->filters.do_filter(*connect_ptr);
 }

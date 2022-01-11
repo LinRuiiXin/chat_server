@@ -47,6 +47,7 @@ void client_thread_runner() {
         close(socketfd);
 }
 
+// 网络数据经过的第一个拦截器, 主要用于编解码消息, 此处将一次报文规定为以 EOF 结束, 然后将消息反序列化为 generic_msg
 void message_protocol_filter(server_connect &connect, shared_ptr<void> arg, filter_chain &filters) {
     auto &in_buffer = connect.in();
     int counter = 1;

@@ -8,6 +8,7 @@
 
 using std::move;
 
+// 该类将一个连接封装, 用于负责一个连接的拦截链调度, 读写事件
 class server_connect final {
 
     friend void tcp_read_handler(int, short, void *);

@@ -16,13 +16,14 @@ typedef unsigned int uint_32;
 typedef std::map<int, class server_connect> connect_map;
 typedef std::pair<int, class server_connect> connect_pair;
 
+// 该类作为一个服务接收 tcp 连接, 可以对该类进行配置
 class server_socket {
 
     friend void tcp_accept_handler(int, short, void*);
 
 public:
     explicit server_socket(uint_32 _port = 80);
-    void set_filter_chain(filter_initializer);
+    void set_filter_chain(filter_initializer); // 设置连接事件拦截器
     void start();
     virtual ~server_socket() = default;
 
