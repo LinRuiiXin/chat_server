@@ -4,6 +4,7 @@
 #include <unistd.h>
 #include "net/headers/server_socket.h"
 #include "filter/headers/filter_chain.h"
+#include "util/headers/variant.h"
 
 #define PORT 8080
 
@@ -12,6 +13,7 @@ using std::endl;
 
 void client_thread_runner();
 
+uint_64 get_generic_msg_len(char_buffer &);
 void message_protocol_filter(server_connect &, shared_ptr<void>, filter_chain &);
 
 int main() {
@@ -20,6 +22,26 @@ int main() {
     socket.set_filter_chain({message_protocol_filter});
     socket.start();
     return 0;
+}
+
+
+// 网络数据经过的第一个拦截器, 主要用于编解码消息, 此处将一次报文规定为以 EOF 结束, 然后将消息反序列化为 generic_msg
+void message_protocol_filter(server_connect &connect, shared_ptr<void> arg, filter_chain &filters) {
+    char_buffer &in_buffer = connect.in();
+    uint_64 msg_len = get_generic_msg_len(in_buffer);
+    if(in_buffer.size() != 0 && msg_len >= in_buffer.size()) {
+        unique_ptr<char[]> msg_buffer = in_buffer.read(msg_len);
+        uint_32 head_field_len = calculate_variant(msg_len);
+        auto msg = make_shared<generic_msg>();
+        msg->ParseFromArray(msg_buffer.get() + head_field_len, msg_len - head_field_len); // NOLINT(cppcoreguidelines-narrowing-conversions)
+        filters.do_filter(connect, msg);
+    }
+}
+
+uint_64 get_generic_msg_len(char_buffer &buffer) {
+    uint_64 res = 0; uint_32 count = 0;
+    for(auto buf_ptr = buffer.begin(); buf_ptr != buffer.end() && append(&res, *buf_ptr, count); ++buf_ptr, ++count){}
+    return res;
 }
 
 void client_thread_runner() {
@@ -39,30 +61,21 @@ void client_thread_runner() {
     }
     generic_msg msg;
     msg.set_timestamp(1641893011425);
-    auto len = msg.ByteSizeLong() + 1;
-    unique_ptr<char[]> buf = unique_ptr<char[]>(new char[len]);
-    msg.SerializeToArray(buf.get(), len - 1);
-    buf[msg.ByteSizeLong()] = EOF;
-    if (write(socketfd, buf.get(), len) > 0)
-        close(socketfd);
+    size_t msg_len = msg.ByteSizeLong();
+    size_t head_field_len = calculate_variant(calculate_variant(msg_len) + msg_len);
+    size_t total_len = msg_len + head_field_len;
+
+    unique_ptr<char[]> buffer = unique_ptr<char[]>(new char[total_len]);
+    serialize_variant(total_len, buffer.get());
+    msg.SerializeToArray(buffer.get() + head_field_len, msg_len); // NOLINT(cppcoreguidelines-narrowing-conversions)
+    write(socketfd, buffer.get(), total_len);
 }
 
-// 网络数据经过的第一个拦截器, 主要用于编解码消息, 此处将一次报文规定为以 EOF 结束, 然后将消息反序列化为 generic_msg
-void message_protocol_filter(server_connect &connect, shared_ptr<void> arg, filter_chain &filters) {
-    auto &in_buffer = connect.in();
-    int counter = 1;
-    for (auto it = in_buffer.begin(); it != in_buffer.end(); ++it) {
-        if (*it == EOF) {
-            unique_ptr<char[]> protocol_buffer = in_buffer.read(counter);
-            auto g_msg = make_shared<generic_msg>();
-            if (g_msg->ParseFromArray(protocol_buffer.get(), counter - 1)) {
-                protocol_buffer.reset();
-                printf("[message_protocol_filter] parse request body to generic_msg: {time_stamp: %llu}\n",
-                       g_msg->timestamp());
-                filters.do_filter(connect, g_msg);
-            } else perror("[message_protocol_filter] invalid protocol");
-            return;
-        }
-        ++counter;
-    }
-}
+//int main(){
+//    uint_8 buffer[3]{0};
+//    serialize_variant(23333, buffer);
+//    char_buffer c_buffer;
+//    c_buffer.write(reinterpret_cast<const char *>(buffer), 3);
+//    cout << get_generic_msg_len(c_buffer) << endl;
+//    return 0;
+//}

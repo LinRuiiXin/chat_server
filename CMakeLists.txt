@@ -36,6 +36,6 @@ ENDFOREACH()
 FILE(GLOB PROTO_OUT_FILES "${CMAKE_CURRENT_BINARY_DIR}/src/**/*.pb.**") # 匹配项目目录中所有 **.pb.** 的文件
 message("[protobuf] out files: " ${PROTO_OUT_FILES})
 
-add_executable(chat_server ${PROTO_OUT_FILES} src/main.cpp src/net/server_socket.cpp src/net/headers/server_socket.h src/net/server_connect.cpp src/net/headers/server_connect.h src/buffer/char_buffer.cpp src/buffer/headers/char_buffer.h src/buffer/char_buffer.cpp src/buffer/headers/char_buffer.h src/filter/filter_chain.cpp src/filter/headers/filter_chain.h )
+add_executable(chat_server ${PROTO_OUT_FILES} src/main.cpp src/net/server_socket.cpp src/net/headers/server_socket.h src/net/server_connect.cpp src/net/headers/server_connect.h src/buffer/char_buffer.cpp src/buffer/headers/char_buffer.h src/buffer/char_buffer.cpp src/buffer/headers/char_buffer.h src/filter/filter_chain.cpp src/filter/headers/filter_chain.h src/util/variant.cpp src/util/headers/variant.h)
 
 target_link_libraries(chat_server event ${PROTOBUF_LIBRARIES})
