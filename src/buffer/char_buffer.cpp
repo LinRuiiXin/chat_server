@@ -4,21 +4,21 @@
 
 void log_err_and_exit(const char *);
 
-void char_buffer::write(const char *source, uint_32 len) {
-    for(const char *s_ptr = source; s_ptr < source + len; ++s_ptr)
-        buffer.push_back(*s_ptr);
+void char_buffer::write(const void *source, uint_32 len) {
+    buffer.append((char *)source, len);
 }
 
-// 从字符队列中读取 nums 数量的字符到动态数组中，并返回
-unique_ptr<char[]> char_buffer::read(uint_64 nums) {
-    if(nums > buffer.size()) log_err_and_exit("[char_buffer] read size out of bounds\n");
-    unique_ptr<char[]> out_buffer(new char[nums + 1]);
-    for (int i = 0; i < nums; ++i) {
-        out_buffer[i] = buffer.front();
-        buffer.pop_front();
-    }
-    out_buffer[nums] = '\0';
+unique_ptr<uint_8[]> char_buffer::read(uint_32 len) {
+    if(len > buffer.size()) log_err_and_exit("remove length out of size");
+    auto out_buffer = unique_ptr<uint_8[]>(new uint_8[len]);
+    buffer.copy((char *) out_buffer.get(), len);
+    remove_front(len);
     return out_buffer;
+}
+
+void char_buffer::remove_front(uint_32 len) {
+    if(len > buffer.size()) log_err_and_exit("remove length out of size");
+    buffer = buffer.substr(len, buffer.size());
 }
 
 // 输出错误信息并退出程序

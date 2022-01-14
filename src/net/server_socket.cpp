@@ -14,7 +14,7 @@ void log_error_and_exit(const char *msg);
 
 void tcp_accept_handler(int, short, void*); // NOLINT(readability-redundant-declaration)
 
-//void tcp_read_handler(int, short, void*);
+//void tcp_read_write_handler(int, short, void*);
 
 server_socket::server_socket(uint_32 _port): port(_port), started(false), ev_base(event_base_new()), accept_fd(-1), accept_event(nullptr) {
     if(ev_base == nullptr) log_error_and_exit("unable to init event-base\n");

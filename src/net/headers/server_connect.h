@@ -11,11 +11,14 @@ using std::move;
 // 该类将一个连接封装, 用于负责一个连接的拦截链调度, 读写事件
 class server_connect final {
 
-    friend void tcp_read_handler(int, short, void *);
+//    friend void tcp_read_write_handler(int, short, void *);
+    friend void tcp_read_handler(int, server_connect &);
+    friend void tcp_write_handler(int, server_connect &);
 
 public:
     server_connect(class server_socket &, int, event_base *, filter_chain);
     server_connect(server_connect &&) noexcept;
+    void write(void *, uint_32); // 向 socket 写数据
     char_buffer& in() { return in_buffer; }
     char_buffer& out() { return out_buffer; }
 

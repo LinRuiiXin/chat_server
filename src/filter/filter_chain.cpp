@@ -6,9 +6,9 @@ void filter_chain::add_filter(filter_func filter) {
 }
 
 // 从队首取出一个拦截器, 并调用
-void filter_chain::do_filter(server_connect &connect, shared_ptr<void> arg) {
+void filter_chain::do_filter(server_connect &connect, void *arg) {
     if(filters.empty()) return;
     auto filter_ptr = filters.front();
-    filter_ptr(connect, std::move(arg), *this);
     filters.pop_front();
+    filter_ptr(connect, arg, *this);
 }

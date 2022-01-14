@@ -1,6 +1,6 @@
 syntax = "proto3";
 
-message generic_msg {
+message base_msg {
     uint64 timestamp = 1;
     optional bytes body = 2;
 }
