@@ -1,0 +1,7 @@
+syntax = "proto3";
+
+message base_resp_msg {
+    uint64 timestamp = 1;
+    uint32 code = 2;
+    optional bytes body = 3;
+}

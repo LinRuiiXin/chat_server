@@ -4,7 +4,7 @@
 #include <event.h>
 #include <algorithm>
 #include "../../filter/headers/filter_chain.h"
-#include "../../buffer/headers/char_buffer.h"
+#include "../../buffer/headers/byte_buffer.h"
 
 using std::move;
 
@@ -19,8 +19,8 @@ public:
     server_connect(class server_socket &, int, event_base *, filter_chain);
     server_connect(server_connect &&) noexcept;
     void write(void *, uint_32); // 向 socket 写数据
-    char_buffer& in() { return in_buffer; }
-    char_buffer& out() { return out_buffer; }
+    byte_buffer& in() { return in_buffer; }
+    byte_buffer& out() { return out_buffer; }
 
     server_connect(const server_connect &) = delete;
     server_connect &operator=(server_connect &) = delete;
@@ -29,8 +29,8 @@ private:
     server_socket &server_sock;
     const int sock_fd;
     struct event *event;
-    char_buffer in_buffer;
-    char_buffer out_buffer;
+    byte_buffer in_buffer;
+    byte_buffer out_buffer;
     filter_chain filters;
 
 };

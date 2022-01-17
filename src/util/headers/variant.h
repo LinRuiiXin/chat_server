@@ -27,6 +27,6 @@ uint_64 parse_variant(const void *);
 uint_32 serialize_variant(uint_64, void *);
 
 // 返回整型需要占用的字节数
-uint_32 calculate_variant(uint_64);
+uint_32 variant_len(uint_64 source);
 
 #endif //CHAT_SERVER_VARIANT_H

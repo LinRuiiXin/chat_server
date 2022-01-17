@@ -24,6 +24,7 @@ public:
     filter_chain(filter_chain &&) = default;
 
     void add_filter(filter_func);
+    void start_filter(server_connect &);
     void do_filter(server_connect &, void *arg = nullptr);
 
     filter_chain& operator=(const filter_chain &) = default;

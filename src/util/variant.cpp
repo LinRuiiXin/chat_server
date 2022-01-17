@@ -26,7 +26,7 @@ uint_32 serialize_variant(uint_64 source, void *to) {
     return count;
 }
 
-uint_32 calculate_variant(uint_64 source) {
+uint_32 variant_len(uint_64 source) {
     uint_32 count = 1;
     while ((source >>= 7)) ++count;
     return count;

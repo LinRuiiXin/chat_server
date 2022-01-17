@@ -5,6 +5,11 @@ void filter_chain::add_filter(filter_func filter) {
     filters.push_front(filter);
 }
 
+void filter_chain::start_filter(server_connect &connect) {
+    filter_chain cp_filter = *this;
+    cp_filter.do_filter(connect, nullptr);
+}
+
 // 从队首取出一个拦截器, 并调用
 void filter_chain::do_filter(server_connect &connect, void *arg) {
     if(filters.empty()) return;

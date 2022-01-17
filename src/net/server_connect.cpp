@@ -6,8 +6,6 @@
 #define DEFAULT_BUF_SIZE 512
 
 void tcp_read_write_handler(int, short, void *);  // NOLINT(readability-redundant-declaration)
-void tcp_read_handler(int, server_connect &);
-void tcp_write_handler(int, server_connect &);
 
 // 将客户端 socket 与 server_connect 绑定, 并且向 event_base 注册一个监听数据可读的事件
 server_connect::server_connect(class server_socket &_server_sock, int _sock_fd, event_base *_ev_base, filter_chain _filter_chain)
@@ -53,7 +51,7 @@ void tcp_read_handler(int sock_fd, server_connect &conn) {
     conn.in_buffer.write(buffer, len);
     //printf("received message from %d: %s\n", sock_fd, buffer);
     // 调度请求拦截器
-    conn.filters.do_filter(conn);
+    conn.filters.start_filter(conn);
 }
 
 void tcp_write_handler(int sock_fd, server_connect &conn) {
