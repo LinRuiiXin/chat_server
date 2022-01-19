@@ -18,7 +18,7 @@ class server_connect final {
 public:
     server_connect(class server_socket &, int, event_base *, filter_chain);
     server_connect(server_connect &&) noexcept;
-    void write(void *, uint_32); // 向 socket 写数据
+    void write(const void *, uint_32); // 向 socket 写数据
     byte_buffer& in() { return in_buffer; }
     byte_buffer& out() { return out_buffer; }
 

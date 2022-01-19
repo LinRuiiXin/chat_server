@@ -25,7 +25,7 @@ server_connect::server_connect(server_connect &&_r_c) noexcept :server_sock(_r_c
     event_assign(event, event->ev_base, sock_fd, EV_READ | EV_WRITE | EV_PERSIST, tcp_read_write_handler, this);
 }
 
-void server_connect::write(void *out_ptr, uint_32 len) {
+void server_connect::write(const void *out_ptr, uint_32 len) {
     out_buffer.write(out_ptr, len);
 }
 

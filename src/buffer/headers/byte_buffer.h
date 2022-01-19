@@ -5,14 +5,11 @@
 #include <string>
 #include <utility>
 #include <memory>
+#include "../../generic/headers/size_types.h"
 
 using std::string;
 using std::move;
 using std::unique_ptr;
-
-typedef unsigned char       uint_8;
-typedef unsigned int        uint_32;
-typedef unsigned long long  uint_64;
 
 class byte_buffer final {
 

@@ -12,7 +12,6 @@
 using std::unique_ptr;
 using std::shared_ptr;
 
-typedef unsigned int uint_32;
 typedef std::map<int, class server_connect> connect_map;
 typedef std::pair<int, class server_connect> connect_pair;
 
