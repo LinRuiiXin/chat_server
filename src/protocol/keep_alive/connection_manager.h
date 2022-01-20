@@ -1,0 +1,9 @@
+#ifndef CHAT_SERVER_CONNECTION_MANAGER_H
+#define CHAT_SERVER_CONNECTION_MANAGER_H
+
+class connection_manager {
+
+};
+
+
+#endif //CHAT_SERVER_CONNECTION_MANAGER_H

@@ -3,8 +3,11 @@
 
 #include <event.h>
 #include <algorithm>
+#include <vector>
 #include "../../filter/headers/filter_chain.h"
 #include "../../buffer/headers/byte_buffer.h"
+#include "../../filter/headers/hook_chain.h"
+
 
 using std::move;
 
@@ -16,7 +19,7 @@ class server_connect final {
     friend void tcp_write_handler(int, server_connect &);
 
 public:
-    server_connect(class server_socket &, int, event_base *, filter_chain);
+    server_connect(class server_socket &, int, event_base *, hook_chain &);
     server_connect(server_connect &&) noexcept;
     void write(const void *, uint_32); // 向 socket 写数据
     byte_buffer& in() { return in_buffer; }
@@ -32,6 +35,7 @@ private:
     byte_buffer in_buffer;
     byte_buffer out_buffer;
     filter_chain filters;
+    hook_chain &hooks;
 
 };
 

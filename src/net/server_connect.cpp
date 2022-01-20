@@ -8,8 +8,8 @@
 void tcp_read_write_handler(int, short, void *);  // NOLINT(readability-redundant-declaration)
 
 // 将客户端 socket 与 server_connect 绑定, 并且向 event_base 注册一个监听数据可读的事件
-server_connect::server_connect(class server_socket &_server_sock, int _sock_fd, event_base *_ev_base, filter_chain _filter_chain)
-        : server_sock(_server_sock), sock_fd(_sock_fd), in_buffer(), out_buffer(), filters(std::move(_filter_chain)) {
+server_connect::server_connect(class server_socket &_server_sock, int _sock_fd, event_base *_ev_base, hook_chain &_hooks)
+        : server_sock(_server_sock), sock_fd(_sock_fd), in_buffer(), out_buffer(), hooks(_hooks) {
 
     evutil_make_socket_nonblocking(sock_fd);
     event = event_new(_ev_base, sock_fd, EV_READ | EV_WRITE | EV_PERSIST, tcp_read_write_handler, this);
@@ -20,9 +20,10 @@ server_connect::server_connect(class server_socket &_server_sock, int _sock_fd, 
 // 当 server_connect 对象被移动时, 应将事件的回调函数所传参数改为新的对象
 server_connect::server_connect(server_connect &&_r_c) noexcept :server_sock(_r_c.server_sock), sock_fd(_r_c.sock_fd),
                                                                 in_buffer(move(_r_c.in_buffer)), out_buffer(move(_r_c.out_buffer)),
-                                                                event(_r_c.event), filters(move(_r_c.filters)) {
+                                                                event(_r_c.event), hooks(_r_c.hooks) {
     _r_c.event = nullptr;
     event_assign(event, event->ev_base, sock_fd, EV_READ | EV_WRITE | EV_PERSIST, tcp_read_write_handler, this);
+    hooks.on_active(*this);
 }
 
 void server_connect::write(const void *out_ptr, uint_32 len) {
@@ -49,9 +50,7 @@ void tcp_read_handler(int sock_fd, server_connect &conn) {
         return;
     }
     conn.in_buffer.write(buffer, len);
-    //printf("received message from %d: %s\n", sock_fd, buffer);
-    // 调度请求拦截器
-    conn.filters.start_filter(conn);
+    conn.hooks.on_read_done(conn, nullptr);
 }
 
 void tcp_write_handler(int sock_fd, server_connect &conn) {

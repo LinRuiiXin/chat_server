@@ -3,9 +3,12 @@
 
 #include "server_connect.h"
 #include "../../filter/headers/filter_chain.h"
+#include "connect_hook.h"
+#include "../../filter/headers/hook_chain.h"
 #include <memory>
 #include <event.h>
 #include <map>
+#include <vector>
 
 #define MAX_ACCEPT 65535
 
@@ -23,6 +26,7 @@ class server_socket {
 public:
     explicit server_socket(uint_32 _port = 80);
     void set_filter_chain(filter_initializer); // 设置连接事件拦截器
+    void set_hooks(const hook_chain &);
     void start();
     virtual ~server_socket() = default;
 
@@ -38,6 +42,7 @@ private:
     struct event *accept_event;         // 接收连接 event
     connect_map connect_map{};          // 管理所有连接的 map
     filter_chain filters;               // 连接过滤拦截器
+    hook_chain hooks;                   // 事件钩子
 
     int open_tcp_socket();
 
