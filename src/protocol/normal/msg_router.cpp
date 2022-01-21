@@ -9,8 +9,6 @@
 void log_err_and_exit(const char *);
 base_resp_msg resource_not_found_msg();
 
-handler_map msg_router::handlers = {};
-
 void msg_router::set_handlers(const handlers_initializer& initializer) {
     for(const auto& handler_ptr : initializer) {
         if(handler_exist(handler_ptr->get_path())) log_err_and_exit("existed two or more same path of handler\n");
@@ -18,7 +16,7 @@ void msg_router::set_handlers(const handlers_initializer& initializer) {
     }
 }
 
-void msg_router::router_pre_filter(server_connect &conn, void *arg, filter_chain &filters) {
+void msg_router::do_filter(server_connect &conn, void *arg, filter_chain &filters) {
     auto msg = (base_req_msg*) arg;
     base_resp_msg resp_msg = route(conn, *msg);
     serialize_buffer out_buffer = serialize_as_buffer(resp_msg);

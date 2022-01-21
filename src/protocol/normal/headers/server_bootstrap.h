@@ -19,6 +19,7 @@ public:
 
 private:
     server_socket server_sock;
+    shared_ptr<msg_router> router;
 
 };
 

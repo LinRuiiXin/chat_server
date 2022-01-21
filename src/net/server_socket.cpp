@@ -17,15 +17,15 @@ void tcp_accept_handler(int, short, void*); // NOLINT(readability-redundant-decl
 //void tcp_read_write_handler(int, short, void*);
 
 server_socket::server_socket(uint_32 _port): port(_port), started(false), ev_base(event_base_new()),
-                                             accept_fd(-1), accept_event(nullptr), hooks() {
+                                             accept_fd(-1), accept_event(nullptr), hooks(), filters() {
     if(ev_base == nullptr) log_error_and_exit("unable to init event-base\n");
 }
 
-void server_socket::set_filter_chain(filter_initializer _initializer) {
-    filters = move(filter_chain(_initializer));
+void server_socket::set_filter_chain(filter_chain &&_filters) {
+    filters = move(_filters);
 }
 
-void server_socket::set_hooks(const hook_chain &_hook_chain) {
+void server_socket::set_hooks(hook_chain &&_hook_chain) {
     hooks = _hook_chain;
 }
 
@@ -55,7 +55,7 @@ void tcp_accept_handler(int socket_fd, short events, void *arg) {
 
     evutil_socket_t client_sock_fd = accept(socket_fd, (SAP) &client, &socklen); // 接收一个连接，并且返回一个连接的 socket 文件描述符
     if(client_sock_fd < 0) return;
-    server_sk_ptr->connect_map.insert(connect_pair(client_sock_fd, server_connect(*server_sk_ptr, client_sock_fd, server_sk_ptr->ev_base, server_sk_ptr->hooks)));
+    server_sk_ptr->connect_map.insert(connect_pair(client_sock_fd, server_connect(*server_sk_ptr, client_sock_fd, server_sk_ptr->ev_base)));
 }
 
 // 打开一个接收连接的 socket，设置为非阻塞，返回 socket 文件描述符

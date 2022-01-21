@@ -2,8 +2,9 @@
 #define CHAT_SERVER_SERVER_SOCKET_H
 
 #include "server_connect.h"
+#include "../../generic/headers/size_types.h"
 #include "../../filter/headers/filter_chain.h"
-#include "connect_hook.h"
+#include "../../filter/headers/connect_hook.h"
 #include "../../filter/headers/hook_chain.h"
 #include <memory>
 #include <event.h>
@@ -25,8 +26,10 @@ class server_socket {
 
 public:
     explicit server_socket(uint_32 _port = 80);
-    void set_filter_chain(filter_initializer); // 设置连接事件拦截器
-    void set_hooks(const hook_chain &);
+    void set_filter_chain(filter_chain &&); // 设置连接事件拦截器
+    void set_hooks(hook_chain &&);
+    filter_chain& get_filter_chain() { return filters; }
+    hook_chain& get_hook_chain() { return hooks; }
     void start();
     virtual ~server_socket() = default;
 

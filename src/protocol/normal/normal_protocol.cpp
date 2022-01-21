@@ -3,7 +3,7 @@
 #include "../../util/headers/variant.h"
 #include "util/headers/serialize.h"
 
-void normal_protocol_filter(server_connect &connect, void *arg, filter_chain &filters) {
+void normal_protocol_filter::do_filter(server_connect &connect, void *arg, filter_chain &filters) {
     byte_buffer &in_buf = connect.in();
     uint_64 full_msg_len = parse_variant(in_buf.inner_ptr());
     if(in_buf.size() != 0 && in_buf.size() >= full_msg_len) {
@@ -12,4 +12,3 @@ void normal_protocol_filter(server_connect &connect, void *arg, filter_chain &fi
         filters.do_filter(connect, &msg);
     }
 }
-

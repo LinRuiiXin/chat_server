@@ -4,6 +4,11 @@
 #include <src/protocol/normal/meta/base_req_msg.pb.h>
 #include "../../../net/headers/server_connect.h"
 
-void normal_protocol_filter(class server_connect &, void *, class filter_chain &);
+class normal_protocol_filter: public filter {
+
+public:
+    void do_filter(server_connect &connect, void *pVoid, filter_chain &chain) override;
+
+};
 
 #endif //CHAT_SERVER_NORMAL_PROTOCOL_H

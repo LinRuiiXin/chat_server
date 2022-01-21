@@ -1,19 +1,13 @@
 #include "headers/filter_chain.h"
-#include <utility>
 
-void filter_chain::add_filter(filter_func filter) {
-    filters.push_front(filter);
+void filter_chain::start_filter(server_connect &conn, void *arg) {
+    filter_chain chain_cp = *this;
+    chain_cp.do_filter(conn, arg);
 }
 
-void filter_chain::start_filter(server_connect &connect) {
-    filter_chain cp_filter = *this;
-    cp_filter.do_filter(connect, nullptr);
-}
-
-// 从队首取出一个拦截器, 并调用
-void filter_chain::do_filter(server_connect &connect, void *arg) {
+void filter_chain::do_filter(server_connect &conn, void *arg) {
     if(filters.empty()) return;
     auto filter_ptr = filters.front();
     filters.pop_front();
-    filter_ptr(connect, arg, *this);
+    filter_ptr->do_filter(conn, arg, *this);
 }
